@@ -6,7 +6,7 @@ import com.MarcOnAMission.finance_tracker.Mappers.ApplicationUserDTOMapper;
 import com.MarcOnAMission.finance_tracker.Model.ApplicationUser;
 import com.MarcOnAMission.finance_tracker.Repositories.UserRepository;
 import com.MarcOnAMission.finance_tracker.ServiceImplementations.UserServiceImp;
-import com.MarcOnAMission.finance_tracker.Services.UserService;
+
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -65,4 +65,14 @@ public class UserServiceImplementationTest {
         assertThrows(WeakPasswordException.class,()->userService.validateCredentialInputAndCreateApplicationUser(weakPasswordDataTransferObject));
         verify(userRepository).findByUsername("Tyler Durden");
     }
+    @Test
+    void shouldThrowExceptionWhenUserIsNotFound(){
+
+    }
+    @Test
+    void shouldThrowExceptionWhenUsernameAlreadyExists(){
+
+    }
+
+
 }

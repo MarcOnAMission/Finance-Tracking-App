@@ -12,10 +12,10 @@ public class ApplicationUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long applicationUserId;
-    private String Username;
-    private String Password;
+    private String username;
+    private String password;
     public ApplicationUser(String passedLoginUsername, String passedLoginPassword){
-        this.Username = passedLoginUsername;
-        this.Password = passedLoginPassword;
+        this.username = passedLoginUsername;
+        this.password = passedLoginPassword;
     }
 }

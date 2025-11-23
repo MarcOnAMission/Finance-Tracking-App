@@ -8,6 +8,6 @@ public class ApplicationUserDTOMapper {
         return new ApplicationUser(dataTransferObject.getUsername(), dataTransferObject.getPassword());
     }
     public static UserDataTransferObject createUserDataTransferObject(ApplicationUser passedApplicationUser){
-        return new UserDataTransferObject(passedApplicationUser.getPassword(), passedApplicationUser.getUsername());
+        return new UserDataTransferObject(passedApplicationUser.getUsername(), passedApplicationUser.getPassword());
     }
 }

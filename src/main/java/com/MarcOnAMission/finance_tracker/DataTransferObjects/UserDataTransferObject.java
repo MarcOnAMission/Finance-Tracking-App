@@ -11,9 +11,9 @@ import org.springframework.context.annotation.Scope;
 @NoArgsConstructor
 @Schema(description = "Application user data transfer object used to create a new user.")
 public class UserDataTransferObject {
-        @Schema(description = "User's password the person intends to use",example = "007badboy")
-        private String password;
-        @Schema(description = "User's username the person intends to use",example = "ILoveCoding")
+        @Schema(description = "User's username the person intends to use",example = "007badboy")
         private String username;
+        @Schema(description = "User's password the person intends to use",example = "ILoveCoding")
+        private String password;
 
 }
