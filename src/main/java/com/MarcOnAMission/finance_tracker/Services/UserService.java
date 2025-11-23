@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface UserService {
-        UserDataTransferObject createApplicationUser(UserDataTransferObject passedUserDataTransferObject);
+        UserDataTransferObject validateCredentialInputAndCreateApplicationUser(UserDataTransferObject passedUserDataTransferObject);
         UserDataTransferObject retrieveApplicationUserFromDatabaseById(long id);
         UserDataTransferObject updateApplicationUserInformation(UserDataTransferObject passedUserDataTransferObject);
         void deleteApplicationUserFromDatabaseById(long id);

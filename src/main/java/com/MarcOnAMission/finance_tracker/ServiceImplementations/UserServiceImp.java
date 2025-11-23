@@ -28,7 +28,7 @@ public class UserServiceImp implements UserService {
         }
     }
     @Override
-    public UserDataTransferObject createApplicationUser(UserDataTransferObject passedUserDataTransferObject) {
+    public UserDataTransferObject validateCredentialInputAndCreateApplicationUser(UserDataTransferObject passedUserDataTransferObject) {
         try{
             validateCredentials(passedUserDataTransferObject);
         } catch (RuntimeException e) {
