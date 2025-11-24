@@ -23,4 +23,15 @@ public class FinanceTransaction {
     private TransactionType transactionType;
     private String descriptionOfTransaction;
     private LocalDateTime whenTransactionCreated;
+    public FinanceTransaction(TransactionCategory category,long amount, TransactionType type,String description){
+        this.transactionCategory=category;
+        this.transactionType=type;
+        this.amountTransacted=amount;
+        this.descriptionOfTransaction=description;
+        this.whenTransactionCreated=LocalDateTime.now();
+    }
+
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    private ApplicationUser userThatOwnsTransaction;
 }

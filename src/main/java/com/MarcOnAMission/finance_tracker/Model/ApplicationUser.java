@@ -3,6 +3,9 @@ package com.MarcOnAMission.finance_tracker.Model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Setter@Getter
 @Entity
 @AllArgsConstructor
@@ -18,4 +21,7 @@ public class ApplicationUser {
         this.username = passedLoginUsername;
         this.password = passedLoginPassword;
     }
+
+//    @OneToMany(mappedBy = "userThatOwnsTransaciton",cascade = CascadeType.ALL,orphanRemoval = true)
+//    private List<FinanceTransaction> financeTransactionList = new ArrayList<>();
 }
