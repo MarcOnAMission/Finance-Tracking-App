@@ -29,11 +29,7 @@ public class UserServiceImp implements UserService {
     }
     @Override
     public UserDataTransferObject validateCredentialInputAndCreateApplicationUser(UserDataTransferObject passedUserDataTransferObject) {
-        try{
-            validateCredentials(passedUserDataTransferObject);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        }
+        validateCredentials(passedUserDataTransferObject);
         ApplicationUser user = users.save(ApplicationUserDTOMapper.createAppUserEntity(passedUserDataTransferObject));
         return ApplicationUserDTOMapper.createUserDataTransferObject(user);
     }
@@ -45,12 +41,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public UserDataTransferObject updateApplicationUserInformation(UserDataTransferObject passedUserDataTransferObject) {
-        try{
-            validateCredentials(passedUserDataTransferObject);
-
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        }
+        validateCredentials(passedUserDataTransferObject);
         return ApplicationUserDTOMapper.createUserDataTransferObject(users.save(ApplicationUserDTOMapper.createAppUserEntity(passedUserDataTransferObject)));
     }
 

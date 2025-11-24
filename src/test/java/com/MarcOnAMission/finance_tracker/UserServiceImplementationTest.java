@@ -1,5 +1,7 @@
 package com.MarcOnAMission.finance_tracker;
 
+import com.MarcOnAMission.finance_tracker.CustomExceptions.UserNotFoundException;
+import com.MarcOnAMission.finance_tracker.CustomExceptions.UsernameAlreadyExistsException;
 import com.MarcOnAMission.finance_tracker.CustomExceptions.WeakPasswordException;
 import com.MarcOnAMission.finance_tracker.DataTransferObjects.UserDataTransferObject;
 import com.MarcOnAMission.finance_tracker.Mappers.ApplicationUserDTOMapper;
@@ -53,26 +55,64 @@ public class UserServiceImplementationTest {
         UserDataTransferObject resultDataTransferObject = userService.validateCredentialInputAndCreateApplicationUser(userDataTransferObject);
         //then
         Mockito.verify(userRepository).findByUsername("Tyler Durden");
-        Mockito.verify(userRepository.save(ApplicationUserDTOMapper.createAppUserEntity(userDataTransferObject)));
         Mockito.verify(userRepository).save(any(ApplicationUser.class));
         assertEquals(savedUser.getUsername(),resultDataTransferObject.getUsername());
         assertEquals(savedUser.getPassword(),resultDataTransferObject.getPassword());
     }
     @Test
     void shouldThrowExceptionWhenPasswordIsTooShort(){
-        UserDataTransferObject weakPasswordDataTransferObject = new UserDataTransferObject("wek","Tyler Durden");
+        UserDataTransferObject weakPasswordDataTransferObject = new UserDataTransferObject("Tyler Durden","wek");
         when(userRepository.findByUsername("Tyler Durden")).thenReturn(Optional.empty());
         assertThrows(WeakPasswordException.class,()->userService.validateCredentialInputAndCreateApplicationUser(weakPasswordDataTransferObject));
         verify(userRepository).findByUsername("Tyler Durden");
     }
     @Test
-    void shouldThrowExceptionWhenUserIsNotFound(){
-
+    void shouldThrowExceptionWhenUserToDeleteIsNotFound(){
+        when(userRepository.existsById(1L)).thenReturn(false);
+        assertThrows(UserNotFoundException.class,()->userService.deleteApplicationUserFromDatabaseById(1L));
+        verify(userRepository).existsById(1L);
     }
     @Test
-    void shouldThrowExceptionWhenUsernameAlreadyExists(){
+    void shouldThrowExceptionWhenUsernameAlreadyExists() {
+        // given
+        ApplicationUser existingUser = new ApplicationUser();
+        existingUser.setUsername("Tyler Durden");
 
+        // Correct stubbing: must match exact argument used in service
+        when(userRepository.findByUsername("Tyler Durden"))
+                .thenReturn(Optional.of(existingUser));
+
+        // when & then: now the logic is correct — existing user -> exception
+        assertThrows(UsernameAlreadyExistsException.class, () ->
+                userService.validateCredentialInputAndCreateApplicationUser(userDataTransferObject));
+
+        // Correct verify syntax: the mock is the repository, not the return value
+        verify(userRepository).findByUsername("Tyler Durden");
     }
 
-
+    @Test
+    void shouldReturnCorrectUserFromDatabaseById(){
+        ApplicationUser foundUser = new ApplicationUser("Tyler Durden","007badboy");
+        when(userRepository.findById(1L)).thenReturn(Optional.of(foundUser));
+        UserDataTransferObject foundUserDTO = userService.retrieveApplicationUserFromDatabaseById(1L);
+        assertInstanceOf(UserDataTransferObject.class,foundUserDTO);
+        assertEquals("Tyler Durden",foundUserDTO.getUsername());
+        assertEquals("007badboy",foundUserDTO.getPassword());
+        verify(userRepository).findById(any());
+    }
+    @Test
+    void shouldThrowExceptionWhenUserToBeFoundIsNotFoundById(){
+        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+        assertThrows(UserNotFoundException.class,()->userService.retrieveApplicationUserFromDatabaseById(1L));
+        verify(userRepository).findById(any());
+    }
+    @Test
+    void shouldUpdateUserCredentialsWhenPassedCorrectly(){
+        ApplicationUser updatedUser = new ApplicationUser("Tyler","badboy007");
+        when(userRepository.save(any(ApplicationUser.class))).thenReturn(updatedUser);
+        UserDataTransferObject updatedUserDTO = userService.updateApplicationUserInformation(userDataTransferObject);
+        assertEquals("Tyler",updatedUserDTO.getUsername());
+        assertEquals("badboy007",updatedUserDTO.getPassword());
+        verify(userRepository).save(any());
+    }
 }
