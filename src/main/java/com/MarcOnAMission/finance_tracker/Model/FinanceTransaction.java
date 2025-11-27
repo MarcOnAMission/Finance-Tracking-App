@@ -15,14 +15,18 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Table(name = "Transactions")
 public class FinanceTransaction {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long financeTransactionId;
+    @Enumerated(EnumType.STRING)
     private TransactionCategory transactionCategory;
     private long amountTransacted;
+    @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
     private String descriptionOfTransaction;
     private LocalDateTime whenTransactionCreated;
+
     public FinanceTransaction(TransactionCategory category,long amount, TransactionType type,String description){
         this.transactionCategory=category;
         this.transactionType=type;

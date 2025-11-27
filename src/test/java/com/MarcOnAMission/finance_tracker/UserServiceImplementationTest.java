@@ -109,10 +109,12 @@ public class UserServiceImplementationTest {
     void shouldUpdateUserCredentialsWhenPassedCorrectly() {
         ApplicationUser updatedUser = new ApplicationUser("Tyler", "badboy007");
         when(userRepository.save(any(ApplicationUser.class))).thenReturn(updatedUser);
-        UserDataTransferObject updatedUserDTO = userService.updateApplicationUserInformation(userDataTransferObject);
+        when(userRepository.existsById(1L)).thenReturn(true);
+        UserDataTransferObject updatedUserDTO = userService.updateApplicationUserInformation(1L,userDataTransferObject);
         assertEquals("Tyler", updatedUserDTO.getUsername());
         assertEquals("badboy007", updatedUserDTO.getPassword());
         verify(userRepository).save(any());
+        verify(userRepository).existsById(1L);
     }
 
     @Test

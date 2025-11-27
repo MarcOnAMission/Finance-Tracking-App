@@ -8,6 +8,6 @@ import org.springframework.stereotype.Service;
 public interface UserService {
         UserDataTransferObject validateCredentialInputAndCreateApplicationUser(UserDataTransferObject passedUserDataTransferObject);
         UserDataTransferObject retrieveApplicationUserFromDatabaseById(long id);
-        UserDataTransferObject updateApplicationUserInformation(UserDataTransferObject passedUserDataTransferObject);
+        UserDataTransferObject updateApplicationUserInformation(long id,UserDataTransferObject passedUserDataTransferObject);
         void deleteApplicationUserFromDatabaseById(long id);
 }

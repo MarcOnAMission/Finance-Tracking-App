@@ -16,8 +16,35 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImp implements UserService {
+
     @Autowired
     UserRepository users;
+
+    @Override
+    public UserDataTransferObject retrieveApplicationUserFromDatabaseById(long appUserIdToRetrieve) {
+        return ApplicationUserDTOMapper.createUserDataTransferObject(users.findById(appUserIdToRetrieve).orElseThrow(()->new UserNotFoundException("User not found at this id"+appUserIdToRetrieve)));
+    }
+
+    @Override
+    public UserDataTransferObject updateApplicationUserInformation(long id,UserDataTransferObject passedUserDataTransferObject) {
+        validateCredentials(passedUserDataTransferObject);
+        userOfIdIsPresent(id);
+        return ApplicationUserDTOMapper.createUserDataTransferObject(users.save(ApplicationUserDTOMapper.createAppUserEntity(passedUserDataTransferObject)));
+    }
+
+    @Override
+    public UserDataTransferObject validateCredentialInputAndCreateApplicationUser(UserDataTransferObject passedUserDataTransferObject) {
+        validateCredentials(passedUserDataTransferObject);
+        ApplicationUser user = users.save(ApplicationUserDTOMapper.createAppUserEntity(passedUserDataTransferObject));
+        return ApplicationUserDTOMapper.createUserDataTransferObject(user);
+    }
+
+    private void userOfIdIsPresent(long id){
+        if(!users.existsById(id)){
+            throw new UserNotFoundException("User of this id not found"+id);
+        }
+    }
+
     private void validateCredentials(UserDataTransferObject passedDataTransferObjectToValidate){
         Optional<ApplicationUser> checkIfUserAlreadyExists = users.findByUsername(passedDataTransferObjectToValidate.getUsername());
         if(checkIfUserAlreadyExists.isPresent()){
@@ -26,23 +53,6 @@ public class UserServiceImp implements UserService {
         if(passedDataTransferObjectToValidate.getPassword().length()<4){
             throw new WeakPasswordException("Password cannot be shorter than 4 characters");
         }
-    }
-    @Override
-    public UserDataTransferObject validateCredentialInputAndCreateApplicationUser(UserDataTransferObject passedUserDataTransferObject) {
-        validateCredentials(passedUserDataTransferObject);
-        ApplicationUser user = users.save(ApplicationUserDTOMapper.createAppUserEntity(passedUserDataTransferObject));
-        return ApplicationUserDTOMapper.createUserDataTransferObject(user);
-    }
-
-    @Override
-    public UserDataTransferObject retrieveApplicationUserFromDatabaseById(long appUserIdToRetrieve) {
-        return ApplicationUserDTOMapper.createUserDataTransferObject(users.findById(appUserIdToRetrieve).orElseThrow(()->new UserNotFoundException("User not found at this id"+appUserIdToRetrieve)));
-    }
-
-    @Override
-    public UserDataTransferObject updateApplicationUserInformation(UserDataTransferObject passedUserDataTransferObject) {
-        validateCredentials(passedUserDataTransferObject);
-        return ApplicationUserDTOMapper.createUserDataTransferObject(users.save(ApplicationUserDTOMapper.createAppUserEntity(passedUserDataTransferObject)));
     }
 
     @Override
