@@ -28,6 +28,10 @@ public class TransactionServiceImp implements TransactionService {
 
     public TransactionDataTransferObject updateFinanceTransactionById(Long id, TransactionDataTransferObject inputDTO){
         FinanceTransaction updatedTransaction = findAndReturnFinanceTransactionById(id);
+        updatedTransaction.setAmountTransacted(inputDTO.getDtoAmountTransacted());
+        updatedTransaction.setTransactionCategory(inputDTO.getDtoTransactionCategory());
+        updatedTransaction.setTransactionType(inputDTO.getDtoTransactionType());
+        updatedTransaction.setTransactionDescription(inputDTO.getDtoDescriptionOfTransaction());
         return TransactionDTOMapper.createTransactionDataTransferObject(transactions.save(updatedTransaction));
     }
 

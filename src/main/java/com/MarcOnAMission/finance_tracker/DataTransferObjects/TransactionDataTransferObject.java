@@ -15,7 +15,7 @@ public class FinanceTransaction {
     private TransactionCategory transactionCategory;-
     private long amountTransacted;-
     private TransactionType transactionType;-
-    private String descriptionOfTransaction;-
+    private String transactionDescription;-
     private LocalDateTime whenTransactionCreated;
  */
 @Data

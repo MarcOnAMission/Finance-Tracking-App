@@ -10,14 +10,14 @@
         public static FinanceTransaction createTransactionEntity(TransactionDataTransferObject inputDTO) {
             TransactionType matchedType = inputDTO.getDtoTransactionType();
             TransactionCategory matchedCategory = inputDTO.getDtoTransactionCategory();
-            return new FinanceTransaction(matchedCategory, inputDTO.getDtoAmountTransacted(), matchedType, inputDTO.getDtoDescriptionOfTransaction());
+            return new FinanceTransaction(matchedCategory, matchedType, inputDTO.getDtoAmountTransacted(), inputDTO.getDtoDescriptionOfTransaction());
         }
 
         public static TransactionDataTransferObject createTransactionDataTransferObject(FinanceTransaction passedTransactionToCreateFrom) {
             TransactionType type = passedTransactionToCreateFrom.getTransactionType();
             TransactionCategory category = passedTransactionToCreateFrom.getTransactionCategory();
             long amount = passedTransactionToCreateFrom.getAmountTransacted();
-            String description = passedTransactionToCreateFrom.getDescriptionOfTransaction();
+            String description = passedTransactionToCreateFrom.getTransactionDescription();
             return new TransactionDataTransferObject(category,type,amount,description);
         }
     }

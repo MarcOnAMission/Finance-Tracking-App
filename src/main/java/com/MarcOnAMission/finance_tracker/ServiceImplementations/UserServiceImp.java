@@ -29,7 +29,11 @@ public class UserServiceImp implements UserService {
     public UserDataTransferObject updateApplicationUserInformation(long id,UserDataTransferObject passedUserDataTransferObject) {
         validateCredentials(passedUserDataTransferObject);
         userOfIdIsPresent(id);
-        return ApplicationUserDTOMapper.createUserDataTransferObject(users.save(ApplicationUserDTOMapper.createAppUserEntity(passedUserDataTransferObject)));
+        Optional<ApplicationUser> foundUser = users.findById(id);
+        ApplicationUser updateUser = foundUser.get();
+        updateUser.setPassword(passedUserDataTransferObject.getPassword());
+        updateUser.setUsername(passedUserDataTransferObject.getUsername());
+        return ApplicationUserDTOMapper.createUserDataTransferObject(users.save(updateUser));
     }
 
     @Override

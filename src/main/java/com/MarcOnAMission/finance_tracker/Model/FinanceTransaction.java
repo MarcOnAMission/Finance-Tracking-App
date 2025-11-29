@@ -18,21 +18,21 @@ public class FinanceTransaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long financeTransactionId;
+    private long transactionId;
     @Enumerated(EnumType.STRING)
     private TransactionCategory transactionCategory;
     private long amountTransacted;
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
-    private String descriptionOfTransaction;
-    private LocalDateTime whenTransactionCreated;
+    private String transactionDescription;
+    private LocalDateTime transactionCreatedAt;
 
-    public FinanceTransaction(TransactionCategory category,long amount, TransactionType type,String description){
+    public FinanceTransaction(TransactionCategory category,TransactionType type, long amount,String description){
         this.transactionCategory=category;
         this.transactionType=type;
         this.amountTransacted=amount;
-        this.descriptionOfTransaction=description;
-        this.whenTransactionCreated=LocalDateTime.now();
+        this.transactionDescription =description;
+        this.transactionCreatedAt=LocalDateTime.now();
     }
 
 //    @ManyToOne
